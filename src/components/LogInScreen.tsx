@@ -2,21 +2,24 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { supabase } from "@/supabase";
 import { toast } from "sonner";
+import { SignInForm } from "./SignInForm";
+import { RegisterForm } from "./RegisterForm";
+import { Button } from "./ui/button";
+import { User } from "@supabase/supabase-js";
 
 export const LogInScreen = ({
   setIsLoading,
-  setIsLoggedIn,
+  setCurrentUser,
 }: {
   setIsLoading: (v: boolean) => void;
-  setIsLoggedIn: (v: boolean) => void;
+  setCurrentUser: Dispatch<SetStateAction<User | null>>;
 }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,45 +40,13 @@ export const LogInScreen = ({
         }
         if (data) {
           toast.success("Successfully signed in");
-          setIsLoggedIn(true);
+          setCurrentUser(data.user);
           return;
         }
       })
       .catch((error) => {
-        console.log("error", error);
+        console.error("error", error);
         toast.error("Error signing in");
-      });
-
-    setIsLoading(false);
-  };
-
-  const handleSignUp = () => {
-    setIsLoading(true);
-    supabase.auth
-      .signUp({
-        email,
-        password,
-        options: {
-          data: {
-            name,
-          },
-        },
-      })
-      .then(({ error, data }) => {
-        if (error) {
-          toast.error("Error signing up");
-          return;
-        }
-        if (data) {
-          toast.success("Successfully signed up");
-          handleSignIn();
-          setIsLoggedIn(true);
-          return;
-        }
-      })
-      .catch((error) => {
-        console.log("error", error);
-        toast.error("Error signing up");
       });
 
     setIsLoading(false);
@@ -92,67 +63,44 @@ export const LogInScreen = ({
         </CardHeader>
         <CardContent>
           {!isNewUser ? (
-            <div className="flex flex-col gap-4">
-              <Input
-                type="email"
-                placeholder="Email (abc@fairytalesgroup.com)"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <Input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <div className="flex justify-center items-center gap-2">
-                <Button className="w-full" type="submit" onClick={handleSignIn}>
-                  Login
-                </Button>
-                <Button
-                  className="w-full"
-                  variant="outline"
-                  onClick={() => setIsNewUser(true)}
-                >
-                  Register
-                </Button>
-              </div>
-            </div>
+            <SignInForm
+              handleSignIn={handleSignIn}
+              setEmail={setEmail}
+              setPassword={setPassword}
+              email={email}
+              password={password}
+            />
           ) : (
-            <div className="flex flex-col gap-4">
-              <Input
-                type="text"
-                placeholder="Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-              <Input
-                type="email"
-                placeholder="Email (abc@fairytalesgroup.com)"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <Input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <div className="flex justify-center items-center gap-2">
-                <Button className="w-full" onClick={handleSignUp}>
-                  Register
-                </Button>
-                <Button
-                  className="w-full"
-                  variant="outline"
-                  onClick={() => setIsNewUser(false)}
-                >
-                  Login
-                </Button>
-              </div>
-            </div>
+            <RegisterForm
+              handleSignIn={handleSignIn}
+              setIsLoading={setIsLoading}
+              setCurrentUser={setCurrentUser}
+              setEmail={setEmail}
+              setPassword={setPassword}
+              setName={setName}
+              email={email}
+              password={password}
+              name={name}
+            />
           )}
         </CardContent>
+        <CardFooter>
+          {!isNewUser ? (
+            <>
+              Don't have an account?{" "}
+              <Button variant="link" onClick={() => setIsNewUser(true)}>
+                Register
+              </Button>
+            </>
+          ) : (
+            <>
+              Already have an account?{" "}
+              <Button variant="link" onClick={() => setIsNewUser(false)}>
+                Sign in
+              </Button>
+            </>
+          )}
+        </CardFooter>
       </Card>
     </div>
   );

@@ -1,7 +1,12 @@
 import { supabase } from "@/supabase";
+import { User } from "@supabase/supabase-js";
 
-export const SignOutButton = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
-  if (!isLoggedIn) {
+export const SignOutButton = ({
+  currentUser,
+}: {
+  currentUser: User | null;
+}) => {
+  if (!currentUser) {
     return null;
   }
 
