@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/supabase";
 import { LogInScreen } from "./components/LogInScreen";
 import { SignOutButton } from "./components/SignOutButton";
-import { toast } from "sonner";
 import { Router, Building } from "lucide-react";
 import { User } from "@supabase/supabase-js";
 import { getUsersWithLocations } from "./api/getUsersWithLocations";
