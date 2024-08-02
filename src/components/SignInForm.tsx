@@ -1,21 +1,24 @@
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useAuthStore } from "@/stores/authStore";
 
 export const SignInForm = ({
-  handleSignIn,
   setEmail,
   setPassword,
   email,
   password,
 }: {
-  handleSignIn: () => void;
   setEmail: (v: string) => void;
   setPassword: (v: string) => void;
   email: string;
   password: string;
 }) => {
+  const authStore = useAuthStore();
   return (
-    <div className="flex flex-col gap-4">
+    <form
+      onSubmit={() => {authStore.handleSignIn(email, password)}}
+      className="flex flex-col gap-4"
+    >
       <Input
         type="email"
         placeholder="Email (abc@fairytalesgroup.com)"
@@ -28,9 +31,9 @@ export const SignInForm = ({
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <Button className="w-full" type="submit" onClick={handleSignIn}>
+      <Button className="w-full" type="submit">
         Login
       </Button>
-    </div>
+    </form>
   );
 };

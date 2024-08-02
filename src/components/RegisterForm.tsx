@@ -1,13 +1,8 @@
-import { createUser } from "@/api/createUser";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Dispatch, SetStateAction } from "react";
-import { User } from "@supabase/supabase-js";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useAuthStore } from "@/stores/authStore";
 
 export const RegisterForm = ({
-  handleSignIn,
-  setIsLoading,
-  setCurrentUser,
   setEmail,
   setPassword,
   setName,
@@ -15,9 +10,6 @@ export const RegisterForm = ({
   password,
   name,
 }: {
-  handleSignIn: () => void;
-  setIsLoading: (v: boolean) => void;
-  setCurrentUser: Dispatch<SetStateAction<User | null>>;
   setEmail: (v: string) => void;
   setPassword: (v: string) => void;
   setName: (v: string) => void;
@@ -25,8 +17,12 @@ export const RegisterForm = ({
   password: string;
   name: string;
 }) => {
+  const authStore = useAuthStore();
   return (
-    <div className="flex flex-col gap-4">
+    <form
+      onSubmit={() => authStore.createUser(email, password, name)}
+      className="flex flex-col gap-4"
+    >
       <Input
         type="text"
         placeholder="Name"
@@ -45,21 +41,9 @@ export const RegisterForm = ({
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <Button
-        className="w-full"
-        onClick={() =>
-          createUser(
-            setIsLoading,
-            setCurrentUser,
-            handleSignIn,
-            email,
-            password,
-            name,
-          )
-        }
-      >
+      <Button className="w-full" type="submit">
         Register
       </Button>
-    </div>
+    </form>
   );
 };
