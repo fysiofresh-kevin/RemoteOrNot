@@ -21,6 +21,7 @@ const Home = () => {
 
   useEffect(() => {
     userStore.getUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [locationStore.bump]);
 
   if (userStore.loading || authStore.loading) {
