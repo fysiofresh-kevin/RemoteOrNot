@@ -16,7 +16,10 @@ export const SignInForm = ({
   const authStore = useAuthStore();
   return (
     <form
-      onSubmit={() => {authStore.handleSignIn(email, password)}}
+      onSubmit={(e) => {
+        e.preventDefault();
+        authStore.handleSignIn(email, password);
+      }}
       className="flex flex-col gap-4"
     >
       <Input

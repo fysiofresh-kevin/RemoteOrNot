@@ -6,7 +6,7 @@ const signIn = async (email: string, password: string) => {
     email,
     password,
   });
-  if (data) {
+  if (data.user) {
     toast.success("Successfully signed in");
     return data.user;
   } else {

@@ -11,7 +11,7 @@ import { SignInForm } from "@/components/SignInForm";
 import { RegisterForm } from "@/components/RegisterForm";
 import { Button } from "@/components/ui/button";
 
-export const LogInScreen = () => {
+export const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
