@@ -43,8 +43,8 @@ const RemoteDaysConfigurator = () => {
     days.forEach((v, i) => {
       if (v) daysRemote.push(i);
     });
-    console.log(daysRemote)
     userStore.setRemoteDays(authStore.currentUser.id, daysRemote);
+    userStore.getUsers()
   };
 
   return (

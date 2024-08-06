@@ -2,7 +2,10 @@ import { AddRemoteDates } from "@/components/AddRemoteDates";
 import { SignOutButton } from "@/components/SignOutButton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { UserCard } from "@/components/UserCard";
-import { getIsActuallyRemoteToday, getIsActuallyRemoteTomorrow } from "@/helpers/getIsActuallyRemote";
+import {
+  getIsActuallyRemoteToday,
+  getIsActuallyRemoteTomorrow,
+} from "@/helpers/getIsActuallyRemote";
 import { useAuthStore } from "@/stores/authStore";
 import { useLocationStore } from "@/stores/locationStore";
 import { useUserStore } from "@/stores/userStore";

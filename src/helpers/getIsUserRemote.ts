@@ -48,9 +48,9 @@ const getIsRemote = (user: {
   for (const day of user.days_remote) {
     if (day === dToday.getDay()) {
       scheduledToday = true;
-      if (day === dTomorrow.getDay()) {
-        scheduledTomorrow = true;
-      }
+    }
+    if (day === dTomorrow.getDay()) {
+      scheduledTomorrow = true;
     }
   }
 

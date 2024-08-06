@@ -6,7 +6,7 @@ import {
 import { useAuthStore } from "@/stores/authStore";
 import { useLocationStore } from "@/stores/locationStore";
 import { useUserStore } from "@/stores/userStore";
-// import { RemoteDaysConfigurator } from "@/components/RemoteDaysConfigurator";
+import { RemoteDaysConfigurator } from "@/components/RemoteDaysConfigurator";
 
 /**
  * Buttons to add/remove remote dates
@@ -71,9 +71,9 @@ export const AddRemoteDates = () => {
       <Button
         variant="outline"
         onClick={
-          getIsActuallyRemoteToday(currentUser)
-            ? handleAddRemoteToday
-            : handleRemoveRemoteToday
+          currentUser.locationToday
+            ? handleRemoveRemoteToday
+            : handleAddRemoteToday
         }
       >
         I am {getIsActuallyRemoteToday(currentUser) ? "In office" : "Remote"}{" "}
@@ -82,7 +82,7 @@ export const AddRemoteDates = () => {
       <Button
         variant="outline"
         onClick={
-          getIsActuallyRemoteTomorrow(currentUser)
+          currentUser.locationTomorrow
             ? handleRemoveRemoteTomorrow
             : handleAddRemoteTomorrow
         }
@@ -90,7 +90,7 @@ export const AddRemoteDates = () => {
         I am {getIsActuallyRemoteTomorrow(currentUser) ? "In office" : "Remote"}{" "}
         Tomorrow
       </Button>
-      {/* <RemoteDaysConfigurator /> */}
+      <RemoteDaysConfigurator />
     </div>
   );
 };
