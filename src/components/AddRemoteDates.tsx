@@ -1,8 +1,16 @@
 import { Button } from "@/components/ui/button";
+import {
+  getIsActuallyRemoteToday,
+  getIsActuallyRemoteTomorrow,
+} from "@/helpers/getIsActuallyRemote";
 import { useAuthStore } from "@/stores/authStore";
 import { useLocationStore } from "@/stores/locationStore";
 import { useUserStore } from "@/stores/userStore";
+import { RemoteDaysConfigurator } from "@/components/RemoteDaysConfigurator";
 
+/**
+ * Buttons to add/remove remote dates
+ */
 export const AddRemoteDates = () => {
   const userStore = useUserStore();
   const authStore = useAuthStore();
@@ -12,33 +20,7 @@ export const AddRemoteDates = () => {
     (u) => u.user_id === authStore.currentUser?.id,
   );
 
-  const getIsRemoteToday = () => {
-    if (userStore.users.length !== 0) {
-      const d = new Date();
-      if (currentUser?.locations) {
-        console.log(d.toISOString().split("T")[0]);
-        console.log(currentUser.locations);
-        return currentUser.locations.find(
-          (location) => location.remote_date === d.toISOString().split("T")[0],
-        );
-      }
-    }
-    return false;
-  };
-
-  const getIsRemoteTomorrow = () => {
-    if (userStore.users.length !== 0) {
-      const d = new Date();
-      d.setDate(d.getDate() + 1);
-      if (currentUser?.locations) {
-        return currentUser.locations.find(
-          (location) => location.remote_date === d.toISOString().split("T")[0],
-        );
-      }
-    }
-    return false;
-  };
-
+  /** If the user is scheduled to be remote today and this function is called, add the date */
   const handleAddRemoteToday = () => {
     if (!authStore.currentUser) {
       return;
@@ -82,26 +64,33 @@ export const AddRemoteDates = () => {
     );
   };
 
+  if (!currentUser) return null;
+
   return (
     <div className="fixed bottom-0 left-0 w-full flex justify-center items-center gap-4 m-4 p-0">
       <Button
         variant="outline"
         onClick={
-          getIsRemoteToday() ? handleRemoveRemoteToday : handleAddRemoteToday
+          getIsActuallyRemoteToday(currentUser)
+            ? handleAddRemoteToday
+            : handleRemoveRemoteToday
         }
       >
-        I am {getIsRemoteToday() ? "In office" : "Remote"} Today
+        I am {getIsActuallyRemoteToday(currentUser) ? "In office" : "Remote"}{" "}
+        Today
       </Button>
       <Button
         variant="outline"
         onClick={
-          getIsRemoteTomorrow()
+          getIsActuallyRemoteTomorrow(currentUser)
             ? handleRemoveRemoteTomorrow
             : handleAddRemoteTomorrow
         }
       >
-        I am {getIsRemoteTomorrow() ? "In office" : "Remote"} Tomorrow
+        I am {getIsActuallyRemoteTomorrow(currentUser) ? "In office" : "Remote"}{" "}
+        Tomorrow
       </Button>
+      <RemoteDaysConfigurator />
     </div>
   );
 };

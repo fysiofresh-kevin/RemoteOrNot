@@ -10,6 +10,11 @@ export type UserWithLocations = {
   name: string;
   backInOffice: Date | null;
   locations?: { user_id: string; remote_date: string }[];
+  days_remote: number[];
+  isScheduledRemoteToday: boolean;
+  isScheduledRemoteTomorrow: boolean;
+  locationToday: boolean;
+  locationTomorrow: boolean;
 };
 
 function App() {

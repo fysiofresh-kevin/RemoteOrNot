@@ -2,7 +2,7 @@ import { AddRemoteDates } from "@/components/AddRemoteDates";
 import { SignOutButton } from "@/components/SignOutButton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { UserCard } from "@/components/UserCard";
-import { getIsRemote } from "@/helpers/getIsUserRemote";
+import { getIsActuallyRemoteToday, getIsActuallyRemoteTomorrow } from "@/helpers/getIsActuallyRemote";
 import { useAuthStore } from "@/stores/authStore";
 import { useLocationStore } from "@/stores/locationStore";
 import { useUserStore } from "@/stores/userStore";
@@ -69,13 +69,12 @@ const Home = () => {
             <h3 className="text-xl text-left">Users</h3>
             <div className="grid grid-cols-1 mt-4 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full justify-items-center">
               {userStore.users.map((user) => {
-                const { today, tomorrow } = getIsRemote(user);
                 return (
                   <UserCard
                     key={user.user_id}
                     user={user}
-                    today={today}
-                    tomorrow={tomorrow}
+                    today={getIsActuallyRemoteToday(user)}
+                    tomorrow={getIsActuallyRemoteTomorrow(user)}
                   />
                 );
               })}
