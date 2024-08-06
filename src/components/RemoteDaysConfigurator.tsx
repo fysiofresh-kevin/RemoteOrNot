@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Checkbox } from "./ui/checkbox";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useUserStore } from "@/stores/userStore";
 import { useAuthStore } from "@/stores/authStore";
 
@@ -25,15 +25,26 @@ const RemoteDaysConfigurator = () => {
   const [friday, setFriday] = useState(false);
 
   const days = [false, monday, tuesday, wednesday, thursday, false];
+  const setDays = [() => null, setMonday, setTuesday, setWednesday, setThursday, setFriday, () => null];
+
+  useEffect(() => {
+    const currentUserDaysRemote = userStore.users.find(u => u.user_id === authStore.currentUser?.id)?.days_remote
+    if (currentUserDaysRemote) {
+      currentUserDaysRemote.forEach((v) => {
+        setDays[v](true)
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authStore.currentUser]);
 
   const handleSubmit = () => {
-    console.log(monday, tuesday, wednesday, thursday, friday);
+    if (!authStore.currentUser) return;
     const daysRemote: number[] = [];
     days.forEach((v, i) => {
       if (v) daysRemote.push(i);
     });
-    console.log(daysRemote);
-    userStore.setRemoteDays(authStore.currentUser?.id, daysRemote);
+    console.log(daysRemote)
+    userStore.setRemoteDays(authStore.currentUser.id, daysRemote);
   };
 
   return (

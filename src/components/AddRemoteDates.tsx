@@ -6,7 +6,7 @@ import {
 import { useAuthStore } from "@/stores/authStore";
 import { useLocationStore } from "@/stores/locationStore";
 import { useUserStore } from "@/stores/userStore";
-import { RemoteDaysConfigurator } from "@/components/RemoteDaysConfigurator";
+// import { RemoteDaysConfigurator } from "@/components/RemoteDaysConfigurator";
 
 /**
  * Buttons to add/remove remote dates
@@ -90,7 +90,7 @@ export const AddRemoteDates = () => {
         I am {getIsActuallyRemoteTomorrow(currentUser) ? "In office" : "Remote"}{" "}
         Tomorrow
       </Button>
-      <RemoteDaysConfigurator />
+      {/* <RemoteDaysConfigurator /> */}
     </div>
   );
 };
